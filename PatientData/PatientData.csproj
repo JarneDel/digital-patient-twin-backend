@@ -6,4 +6,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Dapr.AspNetCore" Version="1.10.0" />
+      <PackageReference Include="Dapr.Client" Version="1.10.0" />
+      <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.34.0" />
+    </ItemGroup>
+
 </Project>

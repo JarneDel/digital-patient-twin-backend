@@ -9,12 +9,12 @@ service selecteren
 
 ```bash
 cd DataGenerator
-dapr run -a DataGenerator -H 5012 -p 5002 -G 60002 --resources-path ../components/ dotnet run
+dapr run -a DataGenerator -G 60002 -p 5012 --resources-path ../components/ dotnet run
 ```
 
 ```bash
-cd RealtimeDataService
-dapr run -a CatalogService -H 5010 -p 5001 -G 60001 --resources-path ../components/ dotnet run
+cd PatientData
+dapr run -a PatientDataService -H 5010 -p 5000 -G 60000 --resources-path ../components/ dotnet run
 
 ```
 

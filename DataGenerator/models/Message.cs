@@ -29,11 +29,11 @@ public class SensorData
 
 public class BloodPressure
 {
-    [JsonPropertyName("hoog")]
-    public int Hoog { get; set; }
+    [JsonPropertyName("systolic")]
+    public int Systolic { get; set; }
 
-    [JsonPropertyName("laag")]
-    public int Laag { get; set; }
+    [JsonPropertyName("diastolic")]
+    public int Diastolic { get; set; }
 
     [JsonPropertyName("unit")]
     public string? Unit { get; set; }

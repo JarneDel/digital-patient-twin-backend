@@ -39,8 +39,8 @@ public class Generator : IGenerator
         {
             Bloeddruk = new BloodPressure
             {
-                Hoog = random.Next(80, 120),
-                Laag = random.Next(50, 80),
+                Systolic = random.Next(80, 120),
+                Diastolic = random.Next(50, 80),
                 Unit = "mmHg"
             },
             AdemFrequentie = new SensorValue
