@@ -1,0 +1,56 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/DataGenerator.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/DataGenerator.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watch",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "--project",
+                "${workspaceFolder}/DataGenerator.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "appId": "app",
+            "appPort": 5002,
+            "httpPort": 5012,
+            "grpcPort": 60002,
+            "componentsPath": "../components",
+            "label": "dapr-debug",
+            "type": "dapr",
+            "dependsOn": "build"
+        },
+        {
+            "appId": "app",
+            "label": "daprd-down",
+            "type": "daprd-down"
+        }
+    ]
+}

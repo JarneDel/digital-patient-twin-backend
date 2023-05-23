@@ -8,8 +8,8 @@ service selecteren
 ## Dapr CLI
 
 ```bash
-cd AdminService
-dapr run -a BasketService -H 5013 -p 5003 -G 60003 --resources-path ../components/ dotnet run
+cd DataGenerator
+dapr run -a DataGenerator -H 5012 -p 5002 -G 60002 --resources-path ../components/ dotnet run
 ```
 
 ```bash
