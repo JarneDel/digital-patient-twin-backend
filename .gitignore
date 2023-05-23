@@ -120,3 +120,5 @@ localsecrets/IoTHubSecrets.json
 __azurite*.json
 __azurite*.log
 server-*.log
+__blobstorage__/*
+__queuestorage__/*
