@@ -4,7 +4,8 @@ namespace DataGenerator.models;
 
 public class Message : SensorData
 {
-    
+    [JsonPropertyName("deviceId")]
+    public string? DeviceId { get; set; }
 }
 
 public class SensorData

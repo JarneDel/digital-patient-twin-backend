@@ -59,6 +59,11 @@ public class MqttService : IMqttService
         Console.WriteLine("published");
     }
 
+    public string GetDeviceId()
+    {
+        return _options.ClientId;
+    }
+
     private static void MqttClientOnConnected(object? sender, EventArgs e)
     {
         Console.WriteLine("Connected");
@@ -81,5 +86,7 @@ public class MqttService : IMqttService
 public interface IMqttService
 {
     Task PublishAsync(string topic, string payload);
+    
+    string GetDeviceId();
     
 }

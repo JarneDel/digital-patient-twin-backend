@@ -35,7 +35,7 @@ public class Generator : IGenerator
     {
         var random = new Random();
 
-        var data = new SensorData
+        var data = new Message
         {
             Bloeddruk = new BloodPressure
             {
@@ -62,8 +62,10 @@ public class Generator : IGenerator
             {
                 Value = (decimal)(random.NextDouble() * (37.5 - 36.0) + 36.0),
                 Unit = "°C"
-            }
+            },
+            DeviceId = _mqttService.GetDeviceId()
         };
+
 
         var json = System.Text.Json.JsonSerializer.Serialize(data);
         _mqttService.PublishAsync(_topic, json).Wait();
