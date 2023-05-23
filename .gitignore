@@ -85,7 +85,6 @@ project.lock.json
 nupkg/
 
 # Visual Studio Code
-.vscode
 
 # Rider
 .idea
@@ -114,3 +113,10 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+
+
+localsecrets/
+localsecrets/IoTHubSecrets.json
+__azurite*.json
+__azurite*.log
+server-*.log
