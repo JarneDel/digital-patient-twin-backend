@@ -7,9 +7,11 @@ public class HistoriekService : IHistoriekService
 {
     
     private readonly IHistoriekRepository _historiekRepository;
-    public HistoriekService(IHistoriekRepository historiekRepository)
+    private readonly ITimeService _timeService;
+    public HistoriekService(IHistoriekRepository historiekRepository, ITimeService timeService)
     {
         _historiekRepository = historiekRepository;
+        _timeService = timeService;
         
     }
     public async Task<List<Message>> GetHistoriekByRange(string deviceId, DateTime start, DateTime end, GroupingRange range)
@@ -22,40 +24,32 @@ public class HistoriekService : IHistoriekService
 
     private List<Message> GroupByTime(List<CosmosEntry> entries, GroupingRange range)
     {
-        List<Message> result = new List<Message>();
-        TimeSpan groupingInterval;
+        var result = new List<Message>();
 
-        switch (range)
+        var groupingInterval = range switch
         {
-            case GroupingRange.Hour:
-                groupingInterval = TimeSpan.FromHours(1);
-                break;
-            case GroupingRange.Day:
-                groupingInterval = TimeSpan.FromDays(1);
-                break;
-            case GroupingRange.ThreeDays:
-                groupingInterval = TimeSpan.FromDays(3);
-                break;
-            default:
-                throw new ArgumentException("Invalid range specified.");
-        }
+            GroupingRange.Hour => TimeSpan.FromHours(1),
+            GroupingRange.Day => TimeSpan.FromDays(1),
+            GroupingRange.ThreeDays => TimeSpan.FromDays(3),
+            _ => throw new ArgumentException("Invalid range specified.")
+        };
 
         // var groupedEntries = entries.GroupBy(e => DateTimeOffset.FromUnixTimeSeconds(e.Timestamp).Date);
-        
-        var groupedEntries = entries.GroupBy(e =>
-        {
-            var dateTime = DateTimeOffset.FromUnixTimeSeconds(e.Timestamp);
-            var groupStart = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, 0, 0);
-            var groupNumber = (int)((dateTime - groupStart).TotalDays / 3);
-            return groupStart.AddDays(groupNumber * 3);
-        });
 
-        
+        IEnumerable<IGrouping<int, CosmosEntry>> groupedEntries = range switch
+        {
+            GroupingRange.Day => entries.GroupBy(e => DateTimeOffset.FromUnixTimeSeconds(e.Timestamp).Date.DayOfYear),
+            GroupingRange.Hour => entries.GroupBy(e => DateTimeOffset.FromUnixTimeSeconds(e.Timestamp).DateTime.Hour),
+            GroupingRange.ThreeDays => entries.GroupBy(e =>
+                DateTimeOffset.FromUnixTimeSeconds(e.Timestamp).Date.DayOfYear / 3),
+            _ => throw new ArgumentOutOfRangeException(nameof(range), range, null)
+        };
+
         foreach (var group in groupedEntries)
         {
             var message = new Message
             {
-                Timestamp = group.Key,
+                Timestamp = _timeService.UnixTimeStampToDateTime(group.First().Timestamp),
                 // Calculate blood pressure statistics
                 Bloeddruk = CalculateBloodPressureStatistics(group)
             };
@@ -82,7 +76,7 @@ public class HistoriekService : IHistoriekService
         history.Unit = valueList.FirstOrDefault()?.Unit ?? "";
     }
 
-    private BloodPressureHistory CalculateBloodPressureStatistics(IGrouping<DateTime, CosmosEntry> grouping)
+    private BloodPressureHistory CalculateBloodPressureStatistics<T>(IGrouping<T, CosmosEntry> grouping)
     {
         var bloodPressureValues = grouping.Select(e => e.Bloeddruk).ToList();
 

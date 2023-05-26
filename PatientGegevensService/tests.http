@@ -1,0 +1,66 @@
+POST http://localhost:5001/patient/
+Content-Type: application/json
+
+{
+  "deviceId": "testdatagenerator",
+  "algemeen": {
+    "voornaam": "Jarne",
+    "naam": "Delarue",
+    "geslacht": "man",
+    "geboortedatum": "02/04/2003",
+    "geboorteland": "Belgie"
+  },
+  "profilePictureUrl?": "string",
+  "adres": {
+    "gemeente": "Kachtem",
+    "straat": "Pater Ver Eeckestraat",
+    "postcode": "8870",
+    "nr" : "51"
+  },
+  "contact":{
+    "email": "jarne.delarue@hotmail.com",
+    "telefoon": "0489738332"
+  },
+  "medisch": {
+    "bloedGroep": "B+",
+    "lengte": "187",
+    "gewicht": "70"
+  },
+  "CreatedBy": "124"
+}
+
+### GET patient by id
+GET http://localhost:5001/patient/878c95cf-e82d-40a5-a56c-8790427f1657
+
+
+### update patient by id
+PUT http://localhost:5001/patient/878c95cf-e82d-40a5-a56c-8790427f1657
+Content-Type: application/json
+
+{
+  "deviceId": "testdatagenerator",
+  "algemeen": {
+    "voornaam": "Jarne",
+    "naam": "Delarue",
+    "geslacht": "man",
+    "geboortedatum": "02/04/2003",
+    "geboorteland": "Belgie"
+  },
+  "profilePictureUrl?": "string",
+  "adres": {
+    "gemeente": "Kachtem",
+    "straat": "Pater Ver Eeckestraat",
+    "postcode": "8870",
+    "nr" : "51"
+  },
+  "contact":{
+    "email": "jarne.delarue@hotmail.com",
+    "telefoon": "0489738332"
+  },
+  "medisch": {
+    "bloedGroep": "B+",
+    "lengte": "189",
+    "gewicht": "70"
+  },
+  "CreatedBy": "124"
+}

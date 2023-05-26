@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealtimeDataService", "Real
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGenerator", "DataGenerator\DataGenerator.csproj", "{2FCD745D-CA94-47CD-82B6-A2ED385F337B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientGegevensService", "PatientGegevensService\PatientGegevensService.csproj", "{D0E0A643-46DA-445F-9E15-134E2C0D7FAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{2FCD745D-CA94-47CD-82B6-A2ED385F337B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FCD745D-CA94-47CD-82B6-A2ED385F337B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FCD745D-CA94-47CD-82B6-A2ED385F337B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0E0A643-46DA-445F-9E15-134E2C0D7FAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0E0A643-46DA-445F-9E15-134E2C0D7FAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0E0A643-46DA-445F-9E15-134E2C0D7FAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0E0A643-46DA-445F-9E15-134E2C0D7FAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
