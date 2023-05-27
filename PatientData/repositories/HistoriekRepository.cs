@@ -97,5 +97,6 @@ public class HistoriekRepository : IHistoriekRepository
 public interface IHistoriekRepository
 {
     Task<List<CosmosEntry>> ReadRange(DateTime start, DateTime end, string deviceId);
+    Task<Stats> ReadStats(DateTime start, DateTime end, string deviceId);
 
 }

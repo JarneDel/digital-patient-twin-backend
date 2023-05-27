@@ -74,4 +74,24 @@ app.MapGet("/history/{patientId}", async (HttpRequest req, string patientId, IHi
     }
 });
 
+app.MapGet("/historiek/{patientId}/stats", async (HttpRequest req, string patientId, ITimeService timeService, IHistoriekService historiekService, IDaprInvokerService invokerService) =>
+{
+    try
+    {
+        var patientGeg = await invokerService.GetPatient(patientId);
+        var start = req.Query["start"].FirstOrDefault();
+        var end = req.Query["end"].FirstOrDefault();
+        var startDateTime =  start != null ? timeService.UnixStringToDateTime(start) : DateTime.Now.AddDays(-1);
+        var endDateTime = end != null ? timeService.UnixStringToDateTime(end) :  DateTime.Now;
+        if (patientGeg.DeviceId == null) return Results.StatusCode(404);
+        var result = await historiekService.GetStats(patientGeg.DeviceId, startDateTime, endDateTime);
+        return Results.Ok(result);
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+        return Results.StatusCode(500);
+    }
+});
+
 app.Run();

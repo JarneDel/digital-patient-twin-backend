@@ -22,6 +22,11 @@ public class HistoriekService : IHistoriekService
         return result;
     }
 
+    public async Task<Stats> GetStats(string deviceId, DateTime start, DateTime end)
+    {
+        return await _historiekRepository.ReadStats(start, end, deviceId);
+    }
+
     private List<Message> GroupByTime(List<CosmosEntry> entries, GroupingRange range)
     {
         var result = new List<Message>();
@@ -88,4 +93,6 @@ public class HistoriekService : IHistoriekService
 public interface IHistoriekService
 {
     Task<List<Message>> GetHistoriekByRange(string deviceId, DateTime start, DateTime end, GroupingRange range);
+    Task<Stats> GetStats(string deviceId, DateTime start, DateTime end);
+    
 }
