@@ -26,18 +26,10 @@ public class HistoriekService : IHistoriekService
     {
         var result = new List<Message>();
 
-        var groupingInterval = range switch
-        {
-            GroupingRange.Hour => TimeSpan.FromHours(1),
-            GroupingRange.Day => TimeSpan.FromDays(1),
-            GroupingRange.ThreeDays => TimeSpan.FromDays(3),
-            _ => throw new ArgumentException("Invalid range specified.")
-        };
 
-        // var groupedEntries = entries.GroupBy(e => DateTimeOffset.FromUnixTimeSeconds(e.Timestamp).Date);
-
-        IEnumerable<IGrouping<int, CosmosEntry>> groupedEntries = range switch
+        var groupedEntries = range switch
         {
+            GroupingRange.TenMinutes => entries.GroupBy(e => DateTimeOffset.FromUnixTimeSeconds(e.Timestamp).DateTime.Minute / 10),
             GroupingRange.Day => entries.GroupBy(e => DateTimeOffset.FromUnixTimeSeconds(e.Timestamp).Date.DayOfYear),
             GroupingRange.Hour => entries.GroupBy(e => DateTimeOffset.FromUnixTimeSeconds(e.Timestamp).DateTime.Hour),
             GroupingRange.ThreeDays => entries.GroupBy(e =>
@@ -70,10 +62,10 @@ public class HistoriekService : IHistoriekService
     private void CalculateSensorStatistics(IEnumerable<SensorValue> values, SensorHistory history)
     {
         var valueList = values.ToList(); // Convert to a list to prevent multiple enumerations
-        history.Min = valueList.Min(v => v.Value);
-        history.Max = valueList.Max(v => v.Value);
+        // history.Min = valueList.Min(v => v.Value);
+        // history.Max = valueList.Max(v => v.Value);
         history.Avg = valueList.Average(v => v.Value);
-        history.Unit = valueList.FirstOrDefault()?.Unit ?? "";
+        // history.Unit = valueList.FirstOrDefault()?.Unit ?? "";
     }
 
     private BloodPressureHistory CalculateBloodPressureStatistics<T>(IGrouping<T, CosmosEntry> grouping)
@@ -82,11 +74,11 @@ public class HistoriekService : IHistoriekService
 
         var bloodPRessureHistory = new BloodPressureHistory()
         {
-            SystolicMax = bloodPressureValues.Max(bp => bp.Systolic),
-            SystolicMin = bloodPressureValues.Min(bp => bp.Systolic),
+            // SystolicMax = bloodPressureValues.Max(bp => bp.Systolic),
+            // SystolicMin = bloodPressureValues.Min(bp => bp.Systolic),
             SystolicAvg = (int)bloodPressureValues.Average(bp => bp.Systolic),
-            DiastolicMax = bloodPressureValues.Max(bp => bp.Diastolic),
-            DiastolicMin = bloodPressureValues.Min(bp => bp.Diastolic),
+            // DiastolicMax = bloodPressureValues.Max(bp => bp.Diastolic),
+            // DiastolicMin = bloodPressureValues.Min(bp => bp.Diastolic),
             DiastolicAvg = (int)bloodPressureValues.Average(bp => bp.Diastolic),
         };
         return bloodPRessureHistory;

@@ -11,6 +11,7 @@ builder.Services.AddTransient<IHistoriekService, HistoriekService>();
 builder.Services.AddTransient<ISecretService, SecretService>();
 builder.Services.AddSingleton<IHistoriekRepository, HistoriekRepository>();
 builder.Services.AddSingleton<ITimeService, TimeService>();
+builder.Services.AddSingleton<IDaprInvokerService, DaprInvokerService>();
 builder.Services.AddLogging(
     loggingBuilder =>
     {
@@ -23,18 +24,18 @@ var app = builder.Build();
 
 app.MapGet("/healthcheck", () => "Hello World!");
 
-app.MapGet("/history/{patientId}", async (HttpRequest req, IHistoriekService historiekService, ITimeService timeService) =>
+app.MapGet("/history/{patientId}", async (HttpRequest req, string patientId, IHistoriekService historiekService, ITimeService timeService, IDaprInvokerService invokerService) =>
 {
     try
     {
         // var deviceId = getDeviceId(patientId); // TODO implement
-        var patientId = req.RouteValues["patientId"];
         var range = req.Query["range"];
         var start = req.Query["start"].FirstOrDefault();
         var end = req.Query["end"].FirstOrDefault();
         // convert range to enum
         var groupingRange = range.FirstOrDefault()?.ToLower() switch
         {
+            "10m" => GroupingRange.TenMinutes,
             "1d" => GroupingRange.Hour,
             "day" => GroupingRange.Hour,
             "7d" => GroupingRange.Day,
@@ -47,6 +48,7 @@ app.MapGet("/history/{patientId}", async (HttpRequest req, IHistoriekService his
         // convert start and end to datetime
         var defaultStart = groupingRange switch
         {
+            GroupingRange.TenMinutes => DateTime.Now.AddHours(-2),
             GroupingRange.Hour => DateTime.Now.AddDays(-1),
             GroupingRange.Day => DateTime.Now.AddDays(-7),
             GroupingRange.ThreeDays => DateTime.Now.AddDays(-30),
@@ -55,7 +57,12 @@ app.MapGet("/history/{patientId}", async (HttpRequest req, IHistoriekService his
 
         var startDateTime =  start != null ? timeService.UnixStringToDateTime(start) : defaultStart;
         var endDateTime = end != null ? timeService.UnixStringToDateTime(end) :  DateTime.Now;
-        var deviceId = "testdatagenerator";
+        var patientGeg = await invokerService.GetPatient(patientId);
+        var deviceId = patientGeg.DeviceId;
+        if (deviceId == null) return Results.StatusCode(404);
+        
+        Console.WriteLine($"Getting history for {deviceId} from {startDateTime} to {endDateTime}");
+
         var result =
             await historiekService.GetHistoriekByRange(deviceId, startDateTime, endDateTime, groupingRange);
         return Results.Ok(result);

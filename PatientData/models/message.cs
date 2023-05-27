@@ -16,23 +16,23 @@ public class Message
 
 public class BloodPressureHistory
 {
-    [JsonPropertyName("systolicMin")] public int SystolicMin { get; set; }
+    // [JsonPropertyName("systolicMin")] public int SystolicMin { get; set; }
 
-    [JsonPropertyName("systolicMax")] public int SystolicMax { get; set; }
+    // [JsonPropertyName("systolicMax")] public int SystolicMax { get; set; }
 
     [JsonPropertyName("systolicAvg")] public int SystolicAvg { get; set; }
 
-    [JsonPropertyName("diastolicMin")] public int DiastolicMin { get; set; }
+    // [JsonPropertyName("diastolicMin")] public int DiastolicMin { get; set; }
 
-    [JsonPropertyName("diastolicMax")] public int DiastolicMax { get; set; }
+    // [JsonPropertyName("diastolicMax")] public int DiastolicMax { get; set; }
 
     [JsonPropertyName("diastolicAvg")] public int DiastolicAvg { get; set; }
 }
 
 public class SensorHistory
 {
-    [JsonPropertyName("min")] public decimal Min { get; set; }
-    [JsonPropertyName("max")] public decimal Max { get; set; }
+    // [JsonPropertyName("min")] public decimal Min { get; set; }
+    // [JsonPropertyName("max")] public decimal Max { get; set; }
     [JsonPropertyName("avg")] public decimal Avg { get; set; }
-    [JsonPropertyName("unit")] public string Unit { get; set; } = "";
+    // [JsonPropertyName("unit")] public string Unit { get; set; } = "";
 }
