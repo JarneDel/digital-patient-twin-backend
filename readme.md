@@ -9,7 +9,7 @@ service selecteren
 
 ```bash
 cd DataGenerator
-dapr run -a DataGenerator -G 60002 -p 5012 --resources-path ../components/ dotnet run
+dapr run -a DataGenerator -G 60002 -H 5012 --resources-path ../components/ dotnet run
 ```
 
 ```bash
