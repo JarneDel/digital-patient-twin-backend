@@ -20,7 +20,7 @@ dapr run -a PatientDataService -H 5010 -p 5000 -G 60000 --resources-path ../comp
 
 ```bash
 cd PatientGegevensService
-dapr run -a PricingService -H 5012 -p 5002 -G 60002 --resources-path ../components/ dotnet run
+run -a PatientGegevensService -p 5001 -H 5011 -G 60001 --resources-path ../components/ dotnet run
 ```
 
 Verifying the services are running:
