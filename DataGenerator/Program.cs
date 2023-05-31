@@ -42,6 +42,7 @@ class Program
         builder.AddLogging(configure => configure.AddConsole());
         builder.AddSingleton(daprClient);
         builder.AddTransient<IGenerator, Generator>();
+        builder.AddSingleton<ISendMessageService, EventGrid>();
         builder.AddTransient<IMqttService, MqttService>();
         builder.AddTransient<ISecretService, SecretService>();
         return builder.BuildServiceProvider();

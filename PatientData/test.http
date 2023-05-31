@@ -2,4 +2,8 @@ GET http://localhost:5000/history/878c95cf-e82d-40a5-a56c-8790427f1657
 
 ###
 
-GET http://localhost:5010/v1.0/invoke/PatientGegevensService/method/patient/878c95cf-e82d-40a5-a56c-8790427f1657
+GET http://localhost:5012/v1.0/invoke/PatientGegevensService/method/patient/878c95cf-e82d-40a5-a56c-8790427f1657
+
+###
+
+GET http://localhost:5012/v1.0/invoke/PatientData/method/history/878c95cf-e82d-40a5-a56c-8790427f1657

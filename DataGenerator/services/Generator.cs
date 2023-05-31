@@ -64,11 +64,20 @@ public class Generator : IGenerator
                 Unit = "°C"
             },
             DeviceId = _mqttService.GetDeviceId()
+            // DeviceId = "testdatagenerator"
         };
 
-
+        
         var json = System.Text.Json.JsonSerializer.Serialize(data);
-        _mqttService.PublishAsync(_topic, json).Wait();
+        try
+        {
+            _mqttService.PublishAsync(_topic, json).Wait();
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
     }
 }
 

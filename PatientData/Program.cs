@@ -1,9 +1,11 @@
 using System.Diagnostics;
 using System.Globalization;
+using Microsoft.AspNetCore.Cors;
 using PatientData.models;
 using PatientData.repositories;
 using PatientData.services;
 
+const string allowedOriginsName = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDaprClient(opt =>
     opt.UseHttpEndpoint("http://localhost:5012").UseGrpcEndpoint("http://localhost:60002"));
@@ -19,8 +21,19 @@ builder.Services.AddLogging(
         loggingBuilder.AddConsole();
     }
 );
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(corsPolicyBuilder =>
+    {
+        corsPolicyBuilder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 
 var app = builder.Build();
+app.UseCors(allowedOriginsName);
 
 app.MapGet("/healthcheck", () => "Hello World!");
 
