@@ -27,7 +27,7 @@ public class HistoriekService : IHistoriekService
         return await _historiekRepository.ReadStats(start, end, deviceId);
     }
 
-    private List<Message> GroupByTime(List<CosmosEntry> entries, GroupingRange range)
+    private List<Message> GroupByTime(IEnumerable<CosmosEntry> entries, GroupingRange range)
     {
         var result = new List<Message>();
 
@@ -47,15 +47,15 @@ public class HistoriekService : IHistoriekService
             var message = new Message
             {
                 Timestamp = _timeService.UnixTimeStampToDateTime(group.First().Timestamp),
-                // Calculate blood pressure statistics
-                Bloeddruk = CalculateBloodPressureStatistics(group)
             };
 
             // Calculate sensor statistics
-            CalculateSensorStatistics(group.Select(e => e.AdemFrequentie), message.AdemFrequentie);
-            CalculateSensorStatistics(group.Select(e => e.Hartslag), message.Hartslag);
-            CalculateSensorStatistics(group.Select(e => e.Bloedzuurstof), message.Bloedzuurstof);
-            CalculateSensorStatistics(group.Select(e => e.Temperatuur), message.Temperatuur);
+            CalculateSensorStatistics(group.Select(e => e.AdemFrequentie.Value), message.AdemFrequentie);
+            CalculateSensorStatistics(group.Select(e => e.Hartslag.Value), message.Hartslag);
+            CalculateSensorStatistics(group.Select(e => e.Bloedzuurstof.Value), message.Bloedzuurstof);
+            CalculateSensorStatistics(group.Select(e => e.Temperatuur.Value), message.Temperatuur);
+            CalculateSensorStatistics(group.Select(e => e.Bloeddruk.Systolic), message.Bloeddruk.Systolic);
+            CalculateSensorStatistics(group.Select(e => e.Bloeddruk.Diastolic), message.Bloeddruk.Diastolic);
 
             message.DeviceId = group.FirstOrDefault()?.DeviceId ?? "";
             result.Add(message);
@@ -64,30 +64,27 @@ public class HistoriekService : IHistoriekService
         return result;
     }
 
-    private void CalculateSensorStatistics(IEnumerable<SensorValue> values, SensorHistory history)
+    private static void CalculateSensorStatistics(IEnumerable<decimal> values, SensorHistory history)
     {
         var valueList = values.ToList(); // Convert to a list to prevent multiple enumerations
-        // history.Min = valueList.Min(v => v.Value);
-        // history.Max = valueList.Max(v => v.Value);
-        history.Avg = valueList.Average(v => v.Value);
-        // history.Unit = valueList.FirstOrDefault()?.Unit ?? "";
+        valueList.Sort((a, b) => a.CompareTo(b));
+
+        var count = valueList.Count;
+        var q1Index = count / 4;
+        var q3Index = count - q1Index - 1;
+
+        var q1 = valueList[q1Index];
+        var q3 = valueList[q3Index];
+        var iqr = q3 - q1;
+    
+        history.Min = Math.Round(q1 - 1.5m * iqr, 2);
+        history.Max = Math.Round(q3 + 1.5m * iqr, 2 );
+        history.Avg = (decimal)Math.Round(valueList.Average(v => v), 2);
+        history.Q3 = q3;
+        history.Q1 = q1;
     }
 
-    private BloodPressureHistory CalculateBloodPressureStatistics<T>(IGrouping<T, CosmosEntry> grouping)
-    {
-        var bloodPressureValues = grouping.Select(e => e.Bloeddruk).ToList();
 
-        var bloodPRessureHistory = new BloodPressureHistory()
-        {
-            // SystolicMax = bloodPressureValues.Max(bp => bp.Systolic),
-            // SystolicMin = bloodPressureValues.Min(bp => bp.Systolic),
-            SystolicAvg = (int)bloodPressureValues.Average(bp => bp.Systolic),
-            // DiastolicMax = bloodPressureValues.Max(bp => bp.Diastolic),
-            // DiastolicMin = bloodPressureValues.Min(bp => bp.Diastolic),
-            DiastolicAvg = (int)bloodPressureValues.Average(bp => bp.Diastolic),
-        };
-        return bloodPRessureHistory;
-    }
 }
 
 public interface IHistoriekService

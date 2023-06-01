@@ -5,7 +5,6 @@ using PatientData.models;
 using PatientData.repositories;
 using PatientData.services;
 
-const string allowedOriginsName = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDaprClient(opt =>
     opt.UseHttpEndpoint("http://localhost:5012").UseGrpcEndpoint("http://localhost:60002"));
@@ -33,11 +32,11 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
-app.UseCors(allowedOriginsName);
+app.UseCors();
 
 app.MapGet("/healthcheck", () => "Hello World!");
 
-app.MapGet("/history/{patientId}", async (HttpRequest req, string patientId, IHistoriekService historiekService, ITimeService timeService, IDaprInvokerService invokerService) =>
+app.MapGet("/history/{patientId}",  async (HttpRequest req, string patientId, IHistoriekService historiekService, ITimeService timeService, IDaprInvokerService invokerService) =>
 {
     try
     {

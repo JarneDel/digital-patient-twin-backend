@@ -17,8 +17,8 @@ public class CosmosEntry
 
 public class BloodPressureValue
 {
-    [JsonProperty(PropertyName = "systolic")] public int Systolic { get; set; }
-    [JsonProperty(PropertyName = "diastolic")] public int Diastolic { get; set; }
+    [JsonProperty(PropertyName = "systolic")] public decimal Systolic { get; set; }
+    [JsonProperty(PropertyName = "diastolic")] public decimal Diastolic { get; set; }
     [JsonProperty(PropertyName = "unit")] public string Unit { get; set; } = "";
 }
 
