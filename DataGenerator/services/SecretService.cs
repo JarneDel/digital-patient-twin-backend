@@ -13,7 +13,7 @@ public class SecretService : ISecretService
     
     public string GetSecret(string secretName)
     {
-        var secret = _daprClient.GetSecretAsync("daprsecrets", secretName).Result;
+        var secret = _daprClient.GetSecretAsync("azure-iot-hub-secrets", secretName).Result;
         return secret[secretName];
     }
 
