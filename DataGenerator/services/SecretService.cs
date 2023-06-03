@@ -13,7 +13,12 @@ public class SecretService : ISecretService
     
     public string GetSecret(string secretName)
     {
+        Console.WriteLine($"Getting secret {secretName}");
         var secret = _daprClient.GetSecretAsync("daprsecrets", secretName).Result;
+        Console.WriteLine(secret[secretName].Length > 0
+            ? $"Received secret {secretName}"
+            : $"Failed getting secret {secretName}");
+
         return secret[secretName];
     }
 

@@ -38,7 +38,7 @@ class Program
     static IServiceProvider BuildServiceProvider()
     {
         var builder = new ServiceCollection();
-        var daprClient = new DaprClientBuilder().UseHttpEndpoint("http://localhost:5002").UseGrpcEndpoint("http://localhost:60002").Build();
+        var daprClient = new DaprClientBuilder().Build();
         builder.AddLogging(configure => configure.AddConsole());
         builder.AddSingleton(daprClient);
         builder.AddTransient<IGenerator, Generator>();
