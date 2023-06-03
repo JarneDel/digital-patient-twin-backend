@@ -97,7 +97,7 @@ public class MqttService : IMqttService
     {
         Console.WriteLine("Disconnected");
         // restart in production
-        // if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Production") return;
+        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Production") return;
         // delete mqttClient
         _mqttClient = null;
         // restart
