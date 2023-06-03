@@ -1,0 +1,15 @@
+﻿services:
+  patientgegevensservice:
+    image: patientgegevensservice
+    build:
+      context: .
+      dockerfile: PatientGegevensService/Dockerfile
+    ports:
+        - "5001:80"
+  PatientData:
+    image: patientdata
+    build:
+      context: .
+      dockerfile: PatientData/Dockerfile
+    ports:
+        - "5002:80"

@@ -21,7 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<IPatientService, PatientService>();
 builder.Services.AddSingleton<IPatientRepository, PatientRepository>();
 builder.Services.AddSingleton<ISecretService, SecretService>();
-builder.Services.AddDaprClient(opt => opt.UseHttpEndpoint("http://localhost:5011").UseGrpcEndpoint("http://localhost:60001"));
+builder.Services.AddDaprClient();
 
 // builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     // .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));

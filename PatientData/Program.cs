@@ -6,8 +6,7 @@ using PatientData.repositories;
 using PatientData.services;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDaprClient(opt =>
-    opt.UseHttpEndpoint("http://localhost:5012").UseGrpcEndpoint("http://localhost:60002"));
+builder.Services.AddDaprClient();
 builder.Services.AddTransient<IHistoriekService, HistoriekService>();
 builder.Services.AddTransient<ISecretService, SecretService>();
 builder.Services.AddSingleton<IHistoriekRepository, HistoriekRepository>();
@@ -36,7 +35,8 @@ app.UseCors();
 
 app.MapGet("/healthcheck", () => "Hello World!");
 
-app.MapGet("/history/{patientId}",  async (HttpRequest req, string patientId, IHistoriekService historiekService, ITimeService timeService, IDaprInvokerService invokerService) =>
+app.MapGet("/history/{patientId}", async (HttpRequest req, string patientId, IHistoriekService historiekService,
+    ITimeService timeService, IDaprInvokerService invokerService) =>
 {
     try
     {
@@ -67,12 +67,12 @@ app.MapGet("/history/{patientId}",  async (HttpRequest req, string patientId, IH
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        var startDateTime =  start != null ? timeService.UnixStringToDateTime(start) : defaultStart;
-        var endDateTime = end != null ? timeService.UnixStringToDateTime(end) :  DateTime.Now;
+        var startDateTime = start != null ? timeService.UnixStringToDateTime(start) : defaultStart;
+        var endDateTime = end != null ? timeService.UnixStringToDateTime(end) : DateTime.Now;
         var patientGeg = await invokerService.GetPatient(patientId);
         var deviceId = patientGeg.DeviceId;
         if (deviceId == null) return Results.StatusCode(404);
-        
+
         Console.WriteLine($"Getting history for {deviceId} from {startDateTime} to {endDateTime}");
 
         var result =
@@ -86,15 +86,16 @@ app.MapGet("/history/{patientId}",  async (HttpRequest req, string patientId, IH
     }
 });
 
-app.MapGet("/historiek/{patientId}/stats", async (HttpRequest req, string patientId, ITimeService timeService, IHistoriekService historiekService, IDaprInvokerService invokerService) =>
+app.MapGet("/historiek/{patientId}/stats", async (HttpRequest req, string patientId, ITimeService timeService,
+    IHistoriekService historiekService, IDaprInvokerService invokerService) =>
 {
     try
     {
         var patientGeg = await invokerService.GetPatient(patientId);
         var start = req.Query["start"].FirstOrDefault();
         var end = req.Query["end"].FirstOrDefault();
-        var startDateTime =  start != null ? timeService.UnixStringToDateTime(start) : DateTime.Now.AddDays(-1);
-        var endDateTime = end != null ? timeService.UnixStringToDateTime(end) :  DateTime.Now;
+        var startDateTime = start != null ? timeService.UnixStringToDateTime(start) : DateTime.Now.AddDays(-1);
+        var endDateTime = end != null ? timeService.UnixStringToDateTime(end) : DateTime.Now;
         if (patientGeg.DeviceId == null) return Results.StatusCode(404);
         var result = await historiekService.GetStats(patientGeg.DeviceId, startDateTime, endDateTime);
         return Results.Ok(result);
