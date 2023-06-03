@@ -9,7 +9,8 @@ class Program
     static void Main(string[] args)
     {
         Console.WriteLine("Hello World!");
-
+        var isProduction = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") == "Production";
+        Console.WriteLine($"Environment: {(isProduction ? "Production" : "Development")}");
         var serviceProvider = BuildServiceProvider();
         var generator = serviceProvider.GetService<IGenerator>();
         generator?.StartGeneratingData(TimeSpan.FromSeconds(20));

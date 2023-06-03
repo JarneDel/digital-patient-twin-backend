@@ -9,7 +9,7 @@ namespace DataGenerator.services;
 
 public class MqttService : IMqttService
 {
-    private readonly IMqttClient _mqttClient;
+    private IMqttClient? _mqttClient;
     private readonly MqttClientTcpOptions _options;
 
     private readonly TopicFilter[] _topicFilters =
@@ -33,6 +33,12 @@ public class MqttService : IMqttService
             TlsOptions = new MqttClientTlsOptions() { UseTls = true },
             CleanSession = true
         };
+        Init().Wait();
+
+    }
+    
+    private async Task Init()
+    {
         var factory = new MqttClientFactory();
         _mqttClient = factory.CreateMqttClient();
 
@@ -41,22 +47,40 @@ public class MqttService : IMqttService
         _mqttClient.Disconnected += MqttClientOnDisconnected;
         _mqttClient.ApplicationMessageReceived += MqttClientOnApplicationMessageReceived;
 
-        ConnectAndSubscribe().Wait();
+        await ConnectAndSubscribe();
     }
+
 
     private async Task ConnectAndSubscribe()
     {
+        if (_mqttClient == null) return;
         await _mqttClient.ConnectAsync(_options);
         await _mqttClient.SubscribeAsync(_topicFilters);
     }
 
     public async Task PublishAsync(string topic, string payload)
     {
-        Console.WriteLine("publishing...");
-        var message = new MqttApplicationMessage(topic, Encoding.ASCII.GetBytes(payload),
-            MqttQualityOfServiceLevel.AtLeastOnce, false);
-        await _mqttClient.PublishAsync(message);
-        Console.WriteLine("published");
+        try
+        {
+            if (_mqttClient == null) return;
+            Console.WriteLine("publishing...");
+            var message = new MqttApplicationMessage(topic, Encoding.ASCII.GetBytes(payload),
+                MqttQualityOfServiceLevel.AtLeastOnce, false);
+            await _mqttClient.PublishAsync(message);
+            Console.WriteLine("published");
+        }
+        catch (Exception e)
+        {
+            if (e.Message.Contains("The client is not connected to the server."))
+            {
+                await ConnectAndSubscribe();
+                await PublishAsync(topic, payload);
+            }
+            else
+            {
+                Console.WriteLine(e);
+            }
+        }
     }
 
     public string GetDeviceId()
@@ -69,9 +93,15 @@ public class MqttService : IMqttService
         Console.WriteLine("Connected");
     }
 
-    private static void MqttClientOnDisconnected(object? sender, EventArgs e)
+    private async void MqttClientOnDisconnected(object? sender, EventArgs e)
     {
         Console.WriteLine("Disconnected");
+        // restart in production
+        // if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Production") return;
+        // delete mqttClient
+        _mqttClient = null;
+        // restart
+        await Init();
     }
 
     private static void MqttClientOnApplicationMessageReceived(object? sender,
