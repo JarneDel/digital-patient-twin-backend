@@ -30,4 +30,4 @@ jobs:
             push: true
             file: ./DataGenerator/Dockerfile
             context: .
-            tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/wasm.api:latest
+            tags: ${{ secrets.REGISTRY_LOGIN_SERVER_TEST }}/datagenerator:latest
