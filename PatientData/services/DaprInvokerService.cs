@@ -13,7 +13,7 @@ public class DaprInvokerService : IDaprInvokerService
 
     public async Task<PatientGegevens> GetPatient(string id)
     {
-        var requestMesssage = _daprClient.CreateInvokeMethodRequest<string>(HttpMethod.Get, "PatientGegevensService", "patient/" + id, null);
+        var requestMesssage = _daprClient.CreateInvokeMethodRequest<string>(HttpMethod.Get, "patientgegevensservice", "patient/" + id, null);
         Console.WriteLine("Getting Patient with request: " + requestMesssage.RequestUri?.AbsoluteUri);
         var response = await _daprClient.InvokeMethodAsync<PatientGegevens>(requestMesssage);
         return response;

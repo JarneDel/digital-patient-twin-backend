@@ -33,6 +33,9 @@ Content-Type: application/json
 GET http://localhost:5001/patient/878c95cf-e82d-40a5-a56c-8790427f1657
 
 
+### get patient by id from production
+GET https://patientgegevens--hml08fh.blackdune-2fd1ec46.northeurope.azurecontainerapps.io/patient/878c95cf-e82d-40a5-a56c-8790427f1657
+
 ### update patient by id
 PUT http://localhost:5001/patient/878c95cf-e82d-40a5-a56c-8790427f1657
 Content-Type: application/json

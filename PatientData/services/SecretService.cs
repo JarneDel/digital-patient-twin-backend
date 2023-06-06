@@ -11,7 +11,10 @@ public class SecretService : ISecretService
     }
     public string GetSecret(string secretName)
     {
-        return _daprClient.GetSecretAsync("daprsecrets", secretName).Result[secretName];
+        Console.WriteLine("getting secret: " + secretName);
+        var secret =  _daprClient.GetSecretAsync("daprsecrets", secretName).Result[secretName];
+        Console.WriteLine("Got secret:" + secretName);
+        return secret;
     }
 
     public string GetCosmosDbConnectionString() => GetSecret("CosmosDbConnectionString");

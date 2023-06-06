@@ -30,7 +30,7 @@ builder.Services.AddCors(options =>
 });
 
 
-var app = builder.Build();
+var app = builder.Build(); 
 app.UseCors();
 
 app.MapGet("/healthcheck", () => "Hello World!");
