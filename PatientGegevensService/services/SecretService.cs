@@ -1,4 +1,5 @@
 using Dapr.Client;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace PatientGegevensService.services;
 
@@ -9,22 +10,27 @@ public class SecretService : ISecretService
     {
         _daprClient = daprClient;
     }
-    public string GetSecret(string secretName)
+    public async Task<string> GetSecret(string secretName)
     {
-        return _daprClient.GetSecretAsync("azure-cosmos-db-secrets", secretName).Result[secretName];
+        Console.WriteLine($"Getting secret {secretName}");
+        var secrets = await _daprClient.GetSecretAsync("daprsecrets", secretName);
+        var secret = secrets[secretName];
+        Console.WriteLine($"Got secret {secretName}");
+        return secret;
+        
     }
+ 
+    public Task<string> GetCosmosDbConnectionString() => GetSecret("CosmosDbConnectionString");
 
-    public string GetCosmosDbConnectionString() => GetSecret("connectionString");
+    public Task<string> GetDatabaseName() => GetSecret("databaseName");
 
-    public string GetDatabaseName() => GetSecret("databaseName");
-
-    public string GetContainerName() => GetSecret("PatientGegevensContainerName");
+    public Task<string> GetContainerName() => GetSecret("PatientGegevensContainerName");
 }
 
 public interface ISecretService
 {
-    string GetSecret(string secretName);
-    string GetCosmosDbConnectionString();
-    string GetDatabaseName();
-    string GetContainerName();
+    Task<string> GetSecret(string secretName);
+    Task<string> GetCosmosDbConnectionString();
+    Task<string> GetDatabaseName();
+    Task<string> GetContainerName();
 }

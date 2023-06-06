@@ -44,6 +44,7 @@ app.MapGet("/history/{patientId}", async (HttpRequest req, string patientId, IHi
         var range = req.Query["range"];
         var start = req.Query["start"].FirstOrDefault();
         var end = req.Query["end"].FirstOrDefault();
+        Console.WriteLine($"Range: {range}");
         // convert range to enum
         var groupingRange = range.FirstOrDefault()?.ToLower() switch
         {

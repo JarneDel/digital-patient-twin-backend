@@ -11,14 +11,14 @@ public class SecretService : ISecretService
     }
     public string GetSecret(string secretName)
     {
-        return _daprClient.GetSecretAsync("azure-cosmos-db-secrets", secretName).Result[secretName];
+        return _daprClient.GetSecretAsync("daprsecrets", secretName).Result[secretName];
     }
 
-    public string GetCosmosDbConnectionString() => GetSecret("connectionString");
+    public string GetCosmosDbConnectionString() => GetSecret("CosmosDbConnectionString");
 
     public string GetDatabaseName() => GetSecret("databaseName");
 
-    public string GetContainerName() => GetSecret("containerName");
+    public string GetContainerName() => GetSecret("RealtimeDatacontainerName");
 }
 
 public interface ISecretService
