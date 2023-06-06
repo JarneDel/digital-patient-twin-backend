@@ -15,9 +15,14 @@ public class PatientRepository: IPatientRepository
         {
             ConnectionMode = ConnectionMode.Gateway
         };
-        var cosmosClient = new CosmosClient(secretService.GetCosmosDbConnectionString(), options);
-        var containerName = secretService.GetContainerName();
-        var databaseName = secretService.GetDatabaseName();
+        var connectionStringPromise = secretService.GetCosmosDbConnectionString();
+        var containerNamePromise = secretService.GetContainerName();
+        var databaseNamePromise = secretService.GetDatabaseName();
+        Task.WhenAll(connectionStringPromise, containerNamePromise, databaseNamePromise).GetAwaiter().GetResult();
+        var connectionString = connectionStringPromise.Result;
+        var containerName = containerNamePromise.Result;
+        var databaseName = databaseNamePromise.Result;
+        var cosmosClient = new CosmosClient(connectionString, options);
         cosmosClient.CreateDatabaseIfNotExistsAsync(databaseName).Wait();
         cosmosClient.GetDatabase(databaseName).CreateContainerIfNotExistsAsync(containerName, "/id").Wait();
         _container = cosmosClient.GetContainer(databaseName, containerName);
