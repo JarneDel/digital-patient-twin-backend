@@ -59,3 +59,30 @@ public class Stats
     public double MaxTemperatuur { get; set; }
 }
 
+public class VitalStats
+{
+    public class VitalStat
+    {
+        [JsonProperty("min")]
+        public int Min { get; set; }
+        [JsonProperty("avg")]
+        public double Avg { get; set; }
+        [JsonProperty("max")]
+        public int Max { get; set; }
+        [JsonProperty("unit")]
+        public string Unit { get; set; }
+    }
+
+    [JsonProperty("systolic")]
+    public VitalStat Systolic { get; set; }
+    [JsonProperty("diastolic")]
+    public VitalStat Diastolic { get; set; }
+    [JsonProperty("ademFrequentie")]
+    public VitalStat AdemFrequentie { get; set; }
+    [JsonProperty("hartslag")]
+    public VitalStat Hartslag { get; set; }
+    [JsonProperty("bloedzuurstof")]
+    public VitalStat Bloedzuurstof { get; set; }
+    [JsonProperty("temperatuur")]
+    public VitalStat Temperatuur { get; set; }
+}

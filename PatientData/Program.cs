@@ -87,7 +87,7 @@ app.MapGet("/history/{patientId}", async (HttpRequest req, string patientId, IHi
     }
 });
 
-app.MapGet("/historiek/{patientId}/stats", async (HttpRequest req, string patientId, ITimeService timeService,
+app.MapGet("/history/{patientId}/stats", async (HttpRequest req, string patientId, ITimeService timeService,
     IHistoriekService historiekService, IDaprInvokerService invokerService) =>
 {
     try
