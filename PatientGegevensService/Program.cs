@@ -28,7 +28,19 @@ builder.Services.AddDaprClient();
 
 
 builder.Services.AddValidatorsFromAssemblyContaining<PatientGegevens>();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(corsPolicyBuilder =>
+    {
+        corsPolicyBuilder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
+app.UseCors();
+
 
 // app.UseAuthentication();
 // app.UseAuthorization();
@@ -42,6 +54,7 @@ app.MapGet("/patient/{patientId}", async (string dokterId, string patientId, IPa
     var res = await patientService.GetPatient(patientId);
     return Results.Ok(res);
 });
+
 
 
 app.MapPost("/patient/", async( PatientGegevens gegevens, IPatientService patientService, IValidator<PatientGegevens> validator, string dokterId) =>
