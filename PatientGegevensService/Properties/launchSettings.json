@@ -12,7 +12,7 @@
       "commandName": "Executable",
       "workingDirectory": "$(ProjectDir)",
       "executablePath": "dapr",
-      "commandLineArgs": "run -a PatientGegevensService -p 5001 -H 5011 -G 60001 --resources-path ../components/ dotnet run"
+      "commandLineArgs": "run -a patientgegevensservice -p 5001 -H 5011 -G 60001 --resources-path ../components/ dotnet run"
     },
     "http": {
       "commandName": "Project",
