@@ -47,6 +47,12 @@ app.UseCors();
 
 app.MapGet("/", () => "Hello World!");
 
+app.MapGet("/patient/", async (IPatientService patientService) =>
+{
+    var res = await patientService.GetAllPatients();
+    return Results.Ok(res);
+});
+
 app.MapGet("/patient/{patientId}", async (string dokterId, string patientId, IPatientService patientService) =>
 {
     // todo: add authorization
