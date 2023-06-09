@@ -47,3 +47,10 @@ jobs:
             file: ./PatientData/Dockerfile
             context: .
             tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/patientdata:latest
+        - name: build and push DokterService
+          uses: docker/build-push-action@v4
+          with:
+            push: true
+            file: ./Dokterservice/Dockerfile
+            context: .
+            tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/dokterservice:latest
