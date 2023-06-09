@@ -51,6 +51,13 @@ public class DokterRepository : IDokterRepository
     public async Task<Dokter> AddPatientToDokter(string id, string patientId)
     {
         var dokter = await GetDokter(id);
+        
+        // check if patient already exists
+        var patient = dokter.PatientIds.FirstOrDefault(p => p == patientId);
+        if (patient != null)
+        {
+            return dokter;
+        }
         dokter.PatientIds.Add(patientId);
         var res = await _container.UpsertItemAsync<Dokter>(dokter, new PartitionKey(dokter.Id));
         if (res.StatusCode == HttpStatusCode.OK)
