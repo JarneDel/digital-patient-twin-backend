@@ -27,7 +27,7 @@ public static class ConversionHelper
                 Min = stats.MinAdemFrequentie,
                 Avg = stats.AvgAdemFrequentie,
                 Max = stats.MaxAdemFrequentie,
-                Unit = "per minuut"
+                Unit = "/min"
             },
             Hartslag = new VitalStats.VitalStat
             {
