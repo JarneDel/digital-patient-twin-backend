@@ -28,8 +28,24 @@ public class DokterRepository : IDokterRepository
         var query = new QueryDefinition("SELECT * FROM c WHERE c.id = @id")
             .WithParameter("@id", id);
         var iterator = _container.GetItemQueryIterator<Dokter>(query);
-        var result = await iterator.ReadNextAsync();
-        return result.FirstOrDefault();
+        var dokterResponse = await iterator.ReadNextAsync();
+        var dokter = dokterResponse.FirstOrDefault();
+        if (dokter != null) return dokter;
+        
+        // if no dokter is found, create a new one
+        dokter = new Dokter()
+        {
+            Id = id,
+            PatientIds = new List<string>(),
+            NotificationSettings = new List<NotificationSettings>()
+        };
+        var res = await _container.CreateItemAsync<Dokter>(dokter, new PartitionKey(dokter.Id));
+        if (res.StatusCode == HttpStatusCode.Created)
+        {
+            return res.Resource;
+        }
+        throw new Exception("Something went wrong");
+
     }
 
     public async Task<Dokter> AddPatientToDokter(string id, string patientId)
