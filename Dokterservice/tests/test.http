@@ -1,0 +1,12 @@
+GET http://localhost:5003/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4/
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Wed, 27 May 2020 14:10:00 GMT
+Content-Length: 0
+```
+
+###
+
+POST http://localhost:5003/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4/patient/65121322-00cf-4fb8-ae59-8a6053cac6d6

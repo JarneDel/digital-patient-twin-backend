@@ -28,6 +28,18 @@ public class PatientRepository: IPatientRepository
         _container = cosmosClient.GetContainer(databaseName, containerName);
     }
 
+    public async Task<List<PatientGegevens>> GetAllPatients()
+    {
+        var query = _container.GetItemQueryIterator<PatientGegevens>(new QueryDefinition("SELECT * FROM c"));
+        var results = new List<PatientGegevens>();
+        while (query.HasMoreResults)
+        {
+            var response = await query.ReadNextAsync();
+            results.AddRange(response.ToList());
+        }
+        return results;
+    }
+
     public async Task<string> AddPatient(PatientGegevens gegevens)
     {
         gegevens.Id ??= Guid.NewGuid().ToString();
@@ -62,6 +74,7 @@ public class PatientRepository: IPatientRepository
 
 public interface IPatientRepository
 {
+    Task<List<PatientGegevens>> GetAllPatients();
     Task<string> AddPatient(PatientGegevens gegevens);
     Task<PatientGegevens> GetPatient(string id);
     Task<PatientGegevens> UpdatePatient(PatientGegevens gegevens);
