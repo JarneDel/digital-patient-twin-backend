@@ -117,6 +117,29 @@ public class DokterRepository : IDokterRepository
         }
         return settings;
     }
+
+    public async Task<Dokter> PinPatientToDokter(string id, string patientId)
+    {
+        var dokter = await GetDokter(id);
+        var patient = dokter.PatientIds.FirstOrDefault(p => p == patientId);
+        if (patient == null) throw new Exception("Patient not found");
+        dokter.PinnedPatients.Add(patientId);
+        var res = await _container.UpsertItemAsync<Dokter>(dokter, new PartitionKey(dokter.Id));
+        if (res.StatusCode == HttpStatusCode.OK) return res.Resource;
+        throw new Exception("Something went wrong");
+    }
+
+    public async Task<Dokter> UnpinPatientFromDokter(string id, string patientId)
+    {
+        var dokter = await GetDokter(id);
+        var patient = dokter.PatientIds.FirstOrDefault(p => p == patientId);
+        if (patient == null) throw new Exception("Patient not found");
+        var didExist = dokter.PinnedPatients.Remove(patientId);
+        if (!didExist) return dokter;
+        var res = await _container.UpsertItemAsync<Dokter>(dokter, new PartitionKey(dokter.Id));
+        if (res.StatusCode == HttpStatusCode.OK) return res.Resource;
+        throw new Exception("Something went wrong");
+    }
 }
 
 public interface IDokterRepository
@@ -126,5 +149,8 @@ public interface IDokterRepository
     Task<Dokter> RemovePatientFromDokter(string id, string patientId);
     Task<NotificationSettings> CreateOrUpdateNotificationSettingsByPatient(string id, string patientId, NotificationSettings notificationSettings);
     Task<NotificationSettings> GetNotificationSettingsByPatient(string id, string patientId);
+    
+    Task<Dokter> PinPatientToDokter(string id, string patientId);
+    Task<Dokter> UnpinPatientFromDokter(string id, string patientId);
     
 }

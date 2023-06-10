@@ -16,6 +16,7 @@ public class DaprInvokerService : IDaprInvokerService
         var requestMesssage = _daprClient.CreateInvokeMethodRequest<string>(HttpMethod.Get, "patientgegevensservice", "patient/" + id, null);
         Console.WriteLine("Getting Patient with request: " + requestMesssage.RequestUri?.AbsoluteUri);
         var response = await _daprClient.InvokeMethodAsync<PatientGegevens>(requestMesssage);
+        Console.WriteLine("Got response: " + response.Algemeen.Naam);
         return response;
     }
 }
