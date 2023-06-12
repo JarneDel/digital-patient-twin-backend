@@ -9,7 +9,7 @@ public class PatientGegevens
     [JsonProperty(PropertyName = "id")]
     public string? Id { get; set; }
     public string? DeviceId { get; set; }
-    public General? Algemeen { get; set; }
+    public General Algemeen { get; set; }
     public string? ProfilePictureUrl { get; set; }
     public Address? Adres { get; set; }
     public Contact? Contact { get; set; }
