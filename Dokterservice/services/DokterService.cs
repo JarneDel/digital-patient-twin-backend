@@ -64,6 +64,16 @@ public class DokterService : IDokterService
     {
         return await _dokterRepository.GetNotificationSettingsByPatient(id, patientId);
     }
+
+    public async Task<Dokter> PinPatientToDokter(string id, string patientId)
+    {
+        return await _dokterRepository.PinPatientToDokter(id, patientId);
+    }
+
+    public async Task<Dokter> UnpinPatientFromDokter(string id, string patientId)
+    {
+        return await _dokterRepository.UnpinPatientFromDokter(id, patientId);
+    }
 }
 
 public interface IDokterService
@@ -76,4 +86,7 @@ public interface IDokterService
         NotificationSettings notificationSettings);
 
     Task<NotificationSettings> GetNotificationSettingsByPatient(string id, string patientId);
+    
+    Task<Dokter> PinPatientToDokter(string id, string patientId);
+    Task<Dokter> UnpinPatientFromDokter(string id, string patientId);
 }

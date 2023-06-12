@@ -89,5 +89,38 @@ app.MapPost("/dokter/{id}/patient/{patientId}", async (string id, string patient
     }
 });
 
+// pin patient to doctor
+app.MapPost("/dokter/{id}/patient/{patientId}/pin", async (string id, string patientId, IDokterService dokterService) =>
+{
+    try
+    {
+        var dokter = await dokterService.PinPatientToDokter(id, patientId);
+        return Results.Ok(dokter);
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+        return Results.NotFound();
+    }
+});
+
+
+// unpin patient from doctor
+app.MapDelete("/dokter/{id}/patient/{patientId}/pin", async (string id, string patientId, IDokterService dokterService) =>
+{
+    try
+    {
+        var dokter = await dokterService.UnpinPatientFromDokter(id, patientId);
+        return Results.Ok(dokter);
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+        return Results.NotFound();
+    }
+});
+
+
+
 
 app.Run();

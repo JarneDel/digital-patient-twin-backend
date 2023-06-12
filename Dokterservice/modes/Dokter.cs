@@ -10,4 +10,6 @@ public class Dokter
     public List<NotificationSettings> NotificationSettings { get; set; }
     [JsonProperty(PropertyName = "patientIds")]
     public List<string> PatientIds { get; set; }
+    [JsonProperty(PropertyName = "pinnedPatients")]
+    public List<string> PinnedPatients { get; set; }
 }
