@@ -131,6 +131,35 @@ app.MapDelete("/dokter/{id}/patient/{patientId}/pin", async (string id, string p
     }
 });
 
+// get all patients from doctor
+app.MapGet("/dokter/{id}/patients", async (string id, IDokterService dokterService) =>
+{
+    try
+    {
+        var dokter = await dokterService.GetPatientsByDokter(id);
+        return Results.Ok(dokter);
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+        return Results.NotFound();
+    }
+});
+
+// get all pinned patients from doctor
+app.MapGet("/dokter/{id}/pinned", async (string id, IDokterService dokterService) =>
+{
+    try
+    {
+        var patientGegevens = await dokterService.GetPinnedPatientsByDokter(id);
+        return Results.Ok(patientGegevens);
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+        return Results.NotFound();
+    }
+});
 
 
 

@@ -1,4 +1,5 @@
 using Dapr.Client;
+using Dokterservice.models;
 using Dokterservice.modes;
 using Dokterservice.repositories;
 
@@ -74,6 +75,32 @@ public class DokterService : IDokterService
     {
         return await _dokterRepository.UnpinPatientFromDokter(id, patientId);
     }
+
+    public async Task<List<PatientGegevens>> GetPatientsByDokter(string id)
+    {
+        // get dokter by id
+        var dokter = await _dokterRepository.GetDokter(id);
+        // get all patients
+        var daprRequest = _daprClient.CreateInvokeMethodRequest(HttpMethod.Post, "patientgegevensservice",
+            "patient/multiple", dokter.PatientIds);
+        var response = await _daprClient.InvokeMethodAsync<List<PatientGegevens>>(daprRequest);
+        return response;
+    }
+
+    public async Task<List<PatientGegevens>> GetPinnedPatientsByDokter(string id)
+    {
+        // get dokter by id
+        var dokter = await _dokterRepository.GetDokter(id);
+        // get all patients
+        if (dokter.PinnedPatients == null)
+        {
+            return new List<PatientGegevens>();
+        }
+        var daprRequest = _daprClient.CreateInvokeMethodRequest(HttpMethod.Post, "patientgegevensservice",
+            "patient/multiple", dokter.PinnedPatients);
+        
+        return await _daprClient.InvokeMethodAsync<List<PatientGegevens>>(daprRequest);
+    }
 }
 
 public interface IDokterService
@@ -86,7 +113,10 @@ public interface IDokterService
         NotificationSettings notificationSettings);
 
     Task<NotificationSettings> GetNotificationSettingsByPatient(string id, string patientId);
-    
+
     Task<Dokter> PinPatientToDokter(string id, string patientId);
     Task<Dokter> UnpinPatientFromDokter(string id, string patientId);
+
+    Task<List<PatientGegevens>> GetPatientsByDokter(string id);
+    Task<List<PatientGegevens>> GetPinnedPatientsByDokter(string id);
 }
