@@ -7,6 +7,7 @@ using PatientGegevensService.repositories;
 using PatientGegevensService.services;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using Microsoft.AspNetCore.Mvc;
 
 // var keyVaultName = "kvIndustryProject";
 // var kvUri = "https://" + keyVaultName + ".vault.azure.net";
@@ -58,6 +59,16 @@ app.MapGet("/patient/{patientId}", async (string dokterId, string patientId, IPa
     // todo: add authorization
     // todo: check if doctor has access to patient
     var res = await patientService.GetPatient(patientId);
+    return Results.Ok(res);
+});
+
+
+// get multiple patients
+app.MapPost("/patient/multiple", async ([FromBody] string[] patientIds, IPatientService patientService) =>
+{
+    var tasks = patientIds.Select(patientService.GetPatient).ToList();
+    await Task.WhenAll(tasks);
+    var res = tasks.Select(t => t.Result);
     return Results.Ok(res);
 });
 

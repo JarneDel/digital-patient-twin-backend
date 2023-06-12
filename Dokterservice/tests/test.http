@@ -53,3 +53,12 @@ Content-Type: application/json
     "thresholdMax": 98
   }
 }
+
+### pin patient
+POST http://localhost:5003/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4/patient/878c95cf-e82d-40a5-a56c-8790427f1657/pin
+
+### get patients by doctor
+GET http://localhost:5003/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4/patients
+
+### get pinned patients by doctor
+GET http://localhost:5003/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4/pinned

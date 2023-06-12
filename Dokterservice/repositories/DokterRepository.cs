@@ -131,6 +131,7 @@ public class DokterRepository : IDokterRepository
         var dokter = await GetDokter(id);
         var patient = dokter.PatientIds.FirstOrDefault(p => p == patientId);
         if (patient == null) throw new Exception("Patient not found");
+        dokter.PinnedPatients ??= new List<string>();
         dokter.PinnedPatients.Add(patientId);
         var res = await _container.UpsertItemAsync<Dokter>(dokter, new PartitionKey(dokter.Id));
         if (res.StatusCode == HttpStatusCode.OK) return res.Resource;
