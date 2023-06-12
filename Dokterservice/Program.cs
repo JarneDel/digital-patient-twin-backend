@@ -7,8 +7,19 @@ builder.Services.AddDaprClient();
 builder.Services.AddSingleton<ISecretService, SecretService>();
 builder.Services.AddSingleton<IDokterService, DokterService>();
 builder.Services.AddSingleton<IDokterRepository, DokterRepository>();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(corsPolicyBuilder =>
+    {
+        corsPolicyBuilder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 
 var app = builder.Build();
+app.UseCors();
 
 app.MapGet("/", () => "service is live!");
 

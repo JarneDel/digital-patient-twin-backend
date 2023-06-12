@@ -95,6 +95,7 @@ public class DokterRepository : IDokterRepository
         var settings = dokter.NotificationSettings.FirstOrDefault(s => s.PatientId == patientId);
         if (settings == null)
         {
+            notificationSettings.PatientId ??= patientId;
             dokter.NotificationSettings.Add(notificationSettings);
         }
         else

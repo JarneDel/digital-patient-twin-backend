@@ -10,3 +10,46 @@ Content-Length: 0
 ###
 
 POST http://localhost:5003/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4/patient/878c95cf-e82d-40a5-a56c-8790427f1657
+
+### Get dokter by id from prod
+
+GET https://dokterservice--2ukoior.blackdune-2fd1ec46.northeurope.azurecontainerapps.io/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4/
+
+### set patient notification settings by patient and doctor
+
+POST https://dokterservice--2ukoior.blackdune-2fd1ec46.northeurope.azurecontainerapps.io/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4/patient/878c95cf-e82d-40a5-a56c-8790427f1657/notifications
+Content-Type: application/json
+
+{
+  "patientId": "878c95cf-e82d-40a5-a56c-8790427f1657",
+  "bloeddrukSystolic": {
+    "isEnabled": true,
+    "thresholdMin": 80,
+    "thresholdMax": 120
+  },
+  "bloeddrukDiastolic": {
+    "isEnabled": true,
+    "thresholdMin": 60,
+    "thresholdMax": 80
+  },
+  "hartslag": {
+    "isEnabled": true,
+    "thresholdMin": 60,
+    "thresholdMax": 100
+  },
+  "ademFrequentie": {
+    "isEnabled": true,
+    "thresholdMin": 12,
+    "thresholdMax": 20
+  },
+  "temperatuur": {
+    "isEnabled": false,
+    "thresholdMin": 25,
+    "thresholdMax": 27
+  },
+  "zuurstofSaturatie": {
+    "isEnabled": false,
+    "thresholdMin": 95,
+    "thresholdMax": 98
+  }
+}
