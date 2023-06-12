@@ -15,6 +15,10 @@ public class PatientService : IPatientService
     public async Task<string> AddPatient(PatientGegevens gegevens) => await _patientRepository.AddPatient(gegevens);
     public async Task<PatientGegevens> GetPatient(string id) => await _patientRepository.GetPatient(id);
     public async Task<PatientGegevens> UpdatePatient(PatientGegevens gegevens) => await _patientRepository.UpdatePatient(gegevens);
+    public async Task<PatientGegevens> GetPatientByDeviceId(string deviceId)
+    {
+        return await _patientRepository.GetPatientByDeviceId(deviceId);
+    }
 }
 
 public interface IPatientService
@@ -23,4 +27,5 @@ public interface IPatientService
     Task<string> AddPatient(PatientGegevens gegevens);
     Task<PatientGegevens> GetPatient(string id);
     Task<PatientGegevens> UpdatePatient(PatientGegevens gegevens);
+    Task<PatientGegevens> GetPatientByDeviceId(string deviceId);
 }

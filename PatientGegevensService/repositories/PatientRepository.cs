@@ -70,6 +70,16 @@ public class PatientRepository: IPatientRepository
         }
         throw new Exception("Something went wrong");
     }
+
+    public async Task<PatientGegevens> GetPatientByDeviceId(string deviceId)
+    {
+        var query = new QueryDefinition("SELECT * FROM c WHERE c.DeviceId = @deviceId")
+            .WithParameter("@deviceId", deviceId);
+        var iterator = _container.GetItemQueryIterator<PatientGegevens>(query);
+        var patientResponse = await iterator.ReadNextAsync();
+        var patient = patientResponse.FirstOrDefault();
+        return patient;
+    }
 }
 
 public interface IPatientRepository
@@ -78,4 +88,5 @@ public interface IPatientRepository
     Task<string> AddPatient(PatientGegevens gegevens);
     Task<PatientGegevens> GetPatient(string id);
     Task<PatientGegevens> UpdatePatient(PatientGegevens gegevens);
+    Task<PatientGegevens> GetPatientByDeviceId(string deviceId);
 }

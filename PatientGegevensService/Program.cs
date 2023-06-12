@@ -127,4 +127,12 @@ app.MapPut("patient/{id}", async (PatientGegevens gegevens,string id, IPatientSe
 });
 
 
+// get patient coupled with deviceId
+app.MapGet("/patient/device/{deviceId}", async (string deviceId, IPatientService patientService) =>
+{
+    var res = await patientService.GetPatientByDeviceId(deviceId);
+    return Results.Ok(res);
+});
+
+
 app.Run();

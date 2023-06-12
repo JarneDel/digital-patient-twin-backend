@@ -76,3 +76,7 @@ Content-Type: application/json
   "65121322-00cf-4fb8-ae59-8a6053cac6d6",
     "878c95cf-e82d-40a5-a56c-8790427f1657"
 ]
+
+
+### GET patient id by deviceId
+GET http://localhost:5001/patient/device/testdatagenerator
