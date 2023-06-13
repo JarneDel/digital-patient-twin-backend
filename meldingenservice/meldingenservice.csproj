@@ -14,8 +14,14 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Dapr.AspNetCore" Version="1.11.0" />
       <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.34.0" />
-      <PackageReference Include="Microsoft.Azure.SignalR" Version="1.21.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Newtonsoft.Json">
+        <HintPath>..\..\..\.nuget\packages\newtonsoft.json\13.0.3\lib\net6.0\Newtonsoft.Json.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

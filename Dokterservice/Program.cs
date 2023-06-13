@@ -1,3 +1,4 @@
+using Dokterservice.models;
 using Dokterservice.modes;
 using Dokterservice.repositories;
 using Dokterservice.services;
@@ -55,7 +56,7 @@ app.MapGet("/dokter/{id}/patient/{patientId}/notifications", async (string id, s
 
 // set patient notification settings by patient and doctor
 
-app.MapPost("/dokter/{id}/patient/{patientId}/notifications", async (string id, string patientId, NotificationSettings notificationSettings, IDokterService dokterService) =>
+app.MapPost("/dokter/{id}/patient/{patientId}/notifications", async (string id, string patientId, EnabledNotifications notificationSettings, IDokterService dokterService) =>
 {
     try
     {

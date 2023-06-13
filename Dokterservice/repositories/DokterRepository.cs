@@ -1,4 +1,5 @@
 using System.Net;
+using Dokterservice.models;
 using Dokterservice.modes;
 using Dokterservice.services;
 using Microsoft.Azure.Cosmos;
@@ -37,7 +38,7 @@ public class DokterRepository : IDokterRepository
         {
             Id = id,
             PatientIds = new List<string>(),
-            NotificationSettings = new List<NotificationSettings>()
+            EnabledNotificationsList = new List<EnabledNotifications>()
         };
         var res = await _container.CreateItemAsync<Dokter>(dokter, new PartitionKey(dokter.Id));
         if (res.StatusCode == HttpStatusCode.Created)
@@ -84,7 +85,7 @@ public class DokterRepository : IDokterRepository
         throw new Exception("Something went wrong");
     }
 
-    public async Task<NotificationSettings> CreateOrUpdateNotificationSettingsByPatient(string id, string patientId, NotificationSettings notificationSettings)
+    public async Task<EnabledNotifications> CreateOrUpdateNotificationSettingsByPatient(string id, string patientId, EnabledNotifications enabledNotifications)
     {
         var dokter = await GetDokter(id);
         var patient = dokter.PatientIds.FirstOrDefault(p => p == patientId);
@@ -92,25 +93,25 @@ public class DokterRepository : IDokterRepository
         {
             throw new Exception("Patient not found");
         }
-        var settings = dokter.NotificationSettings.FirstOrDefault(s => s.PatientId == patientId);
+        var settings = dokter.EnabledNotificationsList.FirstOrDefault(s => s.PatientId == patientId);
         if (settings == null)
         {
-            notificationSettings.PatientId ??= patientId;
-            dokter.NotificationSettings.Add(notificationSettings);
+            enabledNotifications.PatientId ??= patientId;
+            dokter.EnabledNotificationsList.Add(enabledNotifications);
         }
         else
         {
-            settings = notificationSettings;
+            settings = enabledNotifications;
         }
         var res = await _container.UpsertItemAsync<Dokter>(dokter, new PartitionKey(dokter.Id));
         if (res.StatusCode == HttpStatusCode.OK)
         {
-            return notificationSettings;
+            return enabledNotifications;
         }
         throw new Exception("Something went wrong");   
     }
 
-    public async Task<NotificationSettings> GetNotificationSettingsByPatient(string id, string patientId)
+    public async Task<EnabledNotifications> GetNotificationSettingsByPatient(string id, string patientId)
     {
         var dokter = await GetDokter(id);
         var patient = dokter.PatientIds.FirstOrDefault(p => p == patientId);
@@ -118,7 +119,7 @@ public class DokterRepository : IDokterRepository
         {
             throw new Exception("Patient not found");
         }
-        var settings = dokter.NotificationSettings.FirstOrDefault(s => s.PatientId == patientId);
+        var settings = dokter.EnabledNotificationsList.FirstOrDefault(s => s.PatientId == patientId);
         if (settings == null)
         {
             throw new Exception("Notification settings not found");
@@ -156,8 +157,8 @@ public interface IDokterRepository
     Task<Dokter> GetDokter(string id);
     Task<Dokter> AddPatientToDokter(string id, string patientId);
     Task<Dokter> RemovePatientFromDokter(string id, string patientId);
-    Task<NotificationSettings> CreateOrUpdateNotificationSettingsByPatient(string id, string patientId, NotificationSettings notificationSettings);
-    Task<NotificationSettings> GetNotificationSettingsByPatient(string id, string patientId);
+    Task<EnabledNotifications> CreateOrUpdateNotificationSettingsByPatient(string id, string patientId, EnabledNotifications enabledNotifications);
+    Task<EnabledNotifications> GetNotificationSettingsByPatient(string id, string patientId);
     
     Task<Dokter> PinPatientToDokter(string id, string patientId);
     Task<Dokter> UnpinPatientFromDokter(string id, string patientId);
