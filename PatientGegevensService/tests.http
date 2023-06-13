@@ -114,3 +114,34 @@ Content-Type: application/json
     "max": 100
   }
 }
+
+### PUT notification thresholds by patient id in production
+PUT https://patientgegevens--hml08fh.blackdune-2fd1ec46.northeurope.azurecontainerapps.io/patient/878c95cf-e82d-40a5-a56c-8790427f1657/thresholds
+Content-Type: application/json
+
+{
+  "bloeddrukSystolisch": {
+    "min": 120,
+    "max": 140
+  },
+  "bloeddrukDiastolisch": {
+    "min": 80,
+    "max": 90
+  },
+  "hartslag": {
+    "min": 60,
+    "max": 100
+  },
+  "temperatuur": {
+    "min": 36,
+    "max": 38
+  },
+  "ademhalingsfrequentie": {
+    "min": 12,
+    "max": 20
+  },
+  "bloedzuurstof": {
+    "min": 95,
+    "max": 100
+  }
+}
