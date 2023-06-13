@@ -19,6 +19,20 @@ public class PatientService : IPatientService
     {
         return await _patientRepository.GetPatientByDeviceId(deviceId);
     }
+
+    public async Task<MedicalNotificationThresholds> GetNotificationThresholds(string patientId)
+    {
+        var patient =  await _patientRepository.GetPatient(patientId);
+        return patient.MedicalNotificationThresholds;
+    }
+
+    public async Task<MedicalNotificationThresholds> SetNotificationThresholds(string patientId, MedicalNotificationThresholds thresholds)
+    {
+        var patient = await GetPatient(patientId);
+        patient.MedicalNotificationThresholds = thresholds;
+        var updatedPatient =  await UpdatePatient(patient);
+        return updatedPatient.MedicalNotificationThresholds;
+    }
 }
 
 public interface IPatientService
@@ -28,4 +42,6 @@ public interface IPatientService
     Task<PatientGegevens> GetPatient(string id);
     Task<PatientGegevens> UpdatePatient(PatientGegevens gegevens);
     Task<PatientGegevens> GetPatientByDeviceId(string deviceId);
+    Task<MedicalNotificationThresholds> GetNotificationThresholds(string patientId);
+    Task<MedicalNotificationThresholds> SetNotificationThresholds(string patientId, MedicalNotificationThresholds thresholds);
 }

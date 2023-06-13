@@ -5,7 +5,7 @@ using PatientGegevensService.services;
 
 namespace PatientGegevensService.repositories;
 
-public class PatientRepository: IPatientRepository
+public class PatientRepository : IPatientRepository
 {
     private readonly Container _container;
 
@@ -37,6 +37,7 @@ public class PatientRepository: IPatientRepository
             var response = await query.ReadNextAsync();
             results.AddRange(response.ToList());
         }
+
         return results;
     }
 
@@ -48,6 +49,7 @@ public class PatientRepository: IPatientRepository
         {
             return res.Resource.Id;
         }
+
         throw new Exception("Something went wrong");
     }
 
@@ -58,6 +60,7 @@ public class PatientRepository: IPatientRepository
         {
             return res.Resource;
         }
+
         throw new Exception("Something went wrong");
     }
 
@@ -68,6 +71,7 @@ public class PatientRepository: IPatientRepository
         {
             return res.Resource;
         }
+
         throw new Exception("Something went wrong");
     }
 
