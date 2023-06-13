@@ -7,9 +7,12 @@ Date: Wed, 27 May 2020 14:10:00 GMT
 Content-Length: 0
 ```
 
-###
+### add patient to dokter
 
-POST http://localhost:5003/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4/patient/878c95cf-e82d-40a5-a56c-8790427f1657
+POST {{dokterUrl}}/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4/patient/16da7d6d-09b5-40b3-9ba4-41492a4c99f7
+
+
+
 
 ### Get dokter by id from prod
 
