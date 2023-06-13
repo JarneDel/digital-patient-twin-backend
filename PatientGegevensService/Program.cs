@@ -127,4 +127,27 @@ app.MapPut("patient/{id}", async (PatientGegevens gegevens,string id, IPatientSe
 });
 
 
+// get patient coupled with deviceId
+app.MapGet("/patient/device/{deviceId}", async (string deviceId, IPatientService patientService) =>
+{
+    var res = await patientService.GetPatientByDeviceId(deviceId);
+    return Results.Ok(res);
+});
+
+
+// get notification thresholds per patient
+app.MapGet("/patient/{patientId}/thresholds", async (string patientId, IPatientService patientService) =>
+{
+    var res = await patientService.GetNotificationThresholds(patientId);
+    return Results.Ok(res);
+});
+
+// set notification thresholds per patient
+app.MapPut("/patient/{patientId}/thresholds", async (string patientId, MedicalNotificationThresholds thresholds, IPatientService patientService) =>
+{
+    var res = await patientService.SetNotificationThresholds(patientId, thresholds);
+    return Results.Ok(res);
+});
+
+
 app.Run();

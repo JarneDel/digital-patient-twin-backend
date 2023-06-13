@@ -4,13 +4,17 @@
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Dapr.AspNetCore" Version="1.10.0" />
-      <PackageReference Include="Dapr.Client" Version="1.10.0" />
-      <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.34.0" />
-      <PackageReference Include="Microsoft.Identity.Web" Version="2.11.0" />
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Azure.SignalR" Version="1.21.3" />
     </ItemGroup>
 
 </Project>
