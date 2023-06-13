@@ -55,13 +55,13 @@ public class DokterService : IDokterService
         return await _dokterRepository.RemovePatientFromDokter(id, patientId);
     }
 
-    public async Task<NotificationSettings> CreateOrUpdateNotificationSettingsByPatient(string id, string patientId,
-        NotificationSettings notificationSettings)
+    public async Task<EnabledNotifications> CreateOrUpdateNotificationSettingsByPatient(string id, string patientId,
+        EnabledNotifications enabledNotifications)
     {
-        return await _dokterRepository.CreateOrUpdateNotificationSettingsByPatient(id, patientId, notificationSettings);
+        return await _dokterRepository.CreateOrUpdateNotificationSettingsByPatient(id, patientId, enabledNotifications);
     }
 
-    public async Task<NotificationSettings> GetNotificationSettingsByPatient(string id, string patientId)
+    public async Task<EnabledNotifications> GetNotificationSettingsByPatient(string id, string patientId)
     {
         return await _dokterRepository.GetNotificationSettingsByPatient(id, patientId);
     }
@@ -109,10 +109,10 @@ public interface IDokterService
     Task<Dokter> AddPatientToDokter(string id, string patientId);
     Task<Dokter> RemovePatientFromDokter(string id, string patientId);
 
-    Task<NotificationSettings> CreateOrUpdateNotificationSettingsByPatient(string id, string patientId,
-        NotificationSettings notificationSettings);
+    Task<EnabledNotifications> CreateOrUpdateNotificationSettingsByPatient(string id, string patientId,
+        EnabledNotifications enabledNotifications);
 
-    Task<NotificationSettings> GetNotificationSettingsByPatient(string id, string patientId);
+    Task<EnabledNotifications> GetNotificationSettingsByPatient(string id, string patientId);
 
     Task<Dokter> PinPatientToDokter(string id, string patientId);
     Task<Dokter> UnpinPatientFromDokter(string id, string patientId);
