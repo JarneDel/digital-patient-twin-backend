@@ -27,7 +27,7 @@ Content-Type: application/json
   "patientId": "878c95cf-e82d-40a5-a56c-8790427f1657",
   "bloeddrukSystolic": {
     "isEnabled": true,
-    "thresholdMin": 80,
+    "thresholdMin": 80,  
     "thresholdMax": 120
   },
   "bloeddrukDiastolic": {
@@ -60,8 +60,23 @@ Content-Type: application/json
 ### pin patient
 POST http://localhost:5003/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4/patient/878c95cf-e82d-40a5-a56c-8790427f1657/pin
 
+### pin patient in production
+POST https://dokterservice--2ukoior.blackdune-2fd1ec46.northeurope.azurecontainerapps.io/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4/patient/878c95cf-e82d-40a5-a56c-8790427f1657/pin
+
+
+### unpin patient
+DELETE http://localhost:5003/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4/patient/878c95cf-e82d-40a5-a56c-8790427f1657/pin
+
+### unpin patient in production
+DELETE https://dokterservice--2ukoior.blackdune-2fd1ec46.northeurope.azurecontainerapps.io/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4/patient/878c95cf-e82d-40a5-a56c-8790427f1657/pin
+
 ### get patients by doctor
 GET http://localhost:5003/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4/patients
 
 ### get pinned patients by doctor
 GET http://localhost:5003/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4/pinned
+
+### get pinned patients by doctor from prod
+GET https://dokterservice--2ukoior.blackdune-2fd1ec46.northeurope.azurecontainerapps.io/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4/pinned
+
+
