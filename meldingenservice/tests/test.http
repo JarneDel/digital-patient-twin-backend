@@ -1,0 +1,22 @@
+### get meldingen by patientId
+
+GET http://localhost:5004/meldingen/878c95cf-e82d-40a5-a56c-8790427f1657?offset=4
+
+### get meldingen by patientId and level
+GET http://localhost:5004/meldingen/878c95cf-e82d-40a5-a56c-8790427f1657?offset=4&level=0
+
+### get meldingen by patientId and level
+GET http://localhost:5004/meldingen/878c95cf-e82d-40a5-a56c-8790427f1657?offset=4&level=1
+
+### get meldingen by patientId and level
+GET http://localhost:5004/meldingen/878c95cf-e82d-40a5-a56c-8790427f1657?offset=4&level=2
+
+### get meldingen by patientId and type
+GET http://localhost:5004/meldingen/878c95cf-e82d-40a5-a56c-8790427f1657?offset=4&type=2
+
+### get meldingen by patientId and type and level
+GET http://localhost:5004/meldingen/878c95cf-e82d-40a5-a56c-8790427f1657?offset=4&type=0&level=2
+
+### get meldingen by dokterId
+
+GET http://localhost:5004/meldingen/dokter/838e5e0b-7a6b-4f79-b7ad-b014264ed8a4?offset=4

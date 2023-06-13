@@ -31,7 +31,8 @@ public class Notification
         [JsonProperty(PropertyName = "Ademhalingsfrequentie")]
         BreathingRate,
         [JsonProperty(PropertyName = "Bloedzuurstof")]
-        BloodOxygen
+        BloodOxygen,
+        All
     }
     
     [JsonProperty(PropertyName = "level")]
@@ -45,7 +46,8 @@ public class Notification
         Warning,
         [JsonProperty(PropertyName = "Ernstig")]
         Critical,
-        None
+        None,
+        All
     }
     [JsonProperty(PropertyName = "value")]
     public decimal Value { get; set; }

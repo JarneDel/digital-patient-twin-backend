@@ -1,14 +1,13 @@
 using Newtonsoft.Json;
 
-namespace Dokterservice.models;
+namespace meldingenservice.Models;
 
 public class Dokter
 {
     [JsonProperty(PropertyName = "id")]
     public string Id { get; set; }
     [JsonProperty(PropertyName = "notificationSettings")]
-    public List<EnabledNotifications> EnabledNotificationsList { get; set; }
-
+    public List<EnabledNotifications> NotificationSettings { get; set; }
     [JsonProperty(PropertyName = "patientIds")]
     public List<string> PatientIds { get; set; }
     [JsonProperty(PropertyName = "pinnedPatients")]
