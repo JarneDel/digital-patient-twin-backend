@@ -54,3 +54,10 @@ jobs:
             file: ./Dokterservice/Dockerfile
             context: .
             tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/dokterservice:latest
+        - name: build and push meldingenservice
+          uses: docker/build-push-action@v4
+          with:
+            push: true
+            file: ./meldingenservice/Dockerfile
+            context: .
+            tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/meldingenservice:latest
