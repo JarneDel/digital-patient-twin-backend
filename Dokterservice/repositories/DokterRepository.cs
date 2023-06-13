@@ -93,16 +93,12 @@ public class DokterRepository : IDokterRepository
         {
             throw new Exception("Patient not found");
         }
+
+        dokter.EnabledNotificationsList ??= new List<EnabledNotifications>();
         var settings = dokter.EnabledNotificationsList.FirstOrDefault(s => s.PatientId == patientId);
-        if (settings == null)
-        {
-            enabledNotifications.PatientId ??= patientId;
-            dokter.EnabledNotificationsList.Add(enabledNotifications);
-        }
-        else
-        {
-            settings = enabledNotifications;
-        }
+        enabledNotifications.PatientId ??= patientId;
+        dokter.EnabledNotificationsList.Remove(settings);
+        dokter.EnabledNotificationsList.Add(enabledNotifications);
         var res = await _container.UpsertItemAsync<Dokter>(dokter, new PartitionKey(dokter.Id));
         if (res.StatusCode == HttpStatusCode.OK)
         {

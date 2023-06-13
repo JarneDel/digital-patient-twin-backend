@@ -50,16 +50,33 @@ app.MapGet("/", () => "Hello World!");
 
 app.MapGet("/patient/", async (IPatientService patientService) =>
 {
-    var res = await patientService.GetAllPatients();
-    return Results.Ok(res);
+    try
+    {
+        var res = await patientService.GetAllPatients();
+        return Results.Ok(res);
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+        return Results.BadRequest("Something went wrong");
+    }
+
 });
 
 app.MapGet("/patient/{patientId}", async (string dokterId, string patientId, IPatientService patientService) =>
 {
     // todo: add authorization
     // todo: check if doctor has access to patient
-    var res = await patientService.GetPatient(patientId);
-    return Results.Ok(res);
+    try
+    {
+        var res = await patientService.GetPatient(patientId);
+        return Results.Ok(res);
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+        return Results.NotFound("Patient not found");
+    }
 });
 
 
@@ -130,8 +147,17 @@ app.MapPut("patient/{id}", async (PatientGegevens gegevens,string id, IPatientSe
 // get patient coupled with deviceId
 app.MapGet("/patient/device/{deviceId}", async (string deviceId, IPatientService patientService) =>
 {
-    var res = await patientService.GetPatientByDeviceId(deviceId);
-    return Results.Ok(res);
+    try
+    {
+        var res = await patientService.GetPatientByDeviceId(deviceId);
+        return Results.Ok(res);
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+        return Results.NotFound("Device or patient not found");
+    }
+
 });
 
 

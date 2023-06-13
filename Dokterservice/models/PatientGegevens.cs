@@ -15,6 +15,10 @@ public class PatientGegevens
     public Contact? Contact { get; set; }
     public Medisch? Medisch { get; set; }
     public string? CreatedBy { get; set; }
+    
+    [JsonProperty(PropertyName = "medicalNotificationThresholds")]
+    public MedicalNotificationThresholds? MedicalNotificationThresholds { get; set; }
+    
 }
 
 public class General
@@ -45,4 +49,31 @@ public class Medisch
     public string? Bloedgroep { get; set; }
     public decimal? Lengte { get; set; }
     public decimal? Gewicht { get; set; }
+}
+
+public class MedicalNotificationThresholds
+{
+    [JsonProperty(PropertyName = "bloeddrukSystolisch")]
+    public NotificationThreshold? BloeddrukSystolisch { get; set; }
+
+    [JsonProperty(PropertyName = "bloeddrukDiastolisch")]
+    public NotificationThreshold? BloeddrukDiastolisch { get; set; }
+
+    [JsonProperty(PropertyName = "hartslag")]
+    public NotificationThreshold? Hartslag { get; set; }
+
+    [JsonProperty(PropertyName = "temperatuur")]
+    public NotificationThreshold? Temperatuur { get; set; }
+
+    [JsonProperty(PropertyName = "ademhalingsfrequentie")]
+    public NotificationThreshold? Ademhalingsfrequentie { get; set; }
+    [JsonProperty(PropertyName = "bloedzuurstof")]
+    public NotificationThreshold? Bloedzuurstof { get; set; }
+
+
+    public class NotificationThreshold
+    {
+        [JsonProperty(PropertyName = "min")] public decimal Min { get; set; }
+        [JsonProperty(PropertyName = "max")] public decimal Max { get; set; }
+    }
 }
