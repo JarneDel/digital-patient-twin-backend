@@ -34,6 +34,23 @@ public class MeldingService : IMeldingService
         var notifications = await _notificationRepository.GetMeldingenByListId(patients, offset, level, type);
         return notifications;
     }
+
+    public async Task<List<Notification>> GetMeldingenByPatientIdAndDoctorId(string patientId, string doctorId,
+        int offset, Notification.NotificationLevel level,
+        Notification.NotificationType type)
+    {
+        var requestMesssage =
+            _daprClient.CreateInvokeMethodRequest<string>(HttpMethod.Get, "dokterservice", "dokter/" + doctorId, null);
+        var response = await _daprClient.InvokeMethodAsync<Dokter>(requestMesssage);
+        var patients = response.PatientIds;
+        if (!patients.Contains(patientId))
+        {
+            throw new PatientNotFoundException("Patient is not in the list of patients of this doctor");
+        }
+
+        var notifications = await _notificationRepository.GetMeldingenById(patientId, offset, level, type);
+        return notifications;
+    }
 }
 
 public interface IMeldingService
@@ -42,5 +59,9 @@ public interface IMeldingService
         Notification.NotificationType type);
 
     Task<List<Notification>> GetMeldingenByDoctorId(string doctorId, int offset, Notification.NotificationLevel level,
+        Notification.NotificationType type);
+
+    Task<List<Notification>> GetMeldingenByPatientIdAndDoctorId(string patientId, string doctorId, int offset,
+        Notification.NotificationLevel level,
         Notification.NotificationType type);
 }

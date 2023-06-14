@@ -46,7 +46,6 @@ public class Notification
         Warning,
         [JsonProperty(PropertyName = "Ernstig")]
         Critical,
-        None,
         All
     }
     [JsonProperty(PropertyName = "value")]
