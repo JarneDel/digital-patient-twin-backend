@@ -50,7 +50,7 @@ public class Notification
         All
     }
     [JsonProperty(PropertyName = "value")]
-    public decimal Value { get; set; }
+    public string Value { get; set; }
     [JsonProperty(PropertyName = "time")]
     public DateTime Timestamp { get; set; }
     

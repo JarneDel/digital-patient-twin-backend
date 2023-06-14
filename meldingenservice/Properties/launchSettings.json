@@ -12,7 +12,7 @@
       "commandName": "Executable",
       "workingDirectory": "$(ProjectDir)",
       "executablePath": "dapr",
-      "commandLineArgs": "run -a meldingservice -H 5014 -p 5004 -G 60004 --resources-path ../components/ dotnet run"
+      "commandLineArgs": "run -a meldingservice -H 5014 -p 5004 -G 60005 --resources-path ../components/ dotnet run"
     },
     "http": {
       "commandName": "Project",
