@@ -81,13 +81,25 @@ app.MapGet("/meldingen/dokter/{dokterId}",
             try
             {
                 var patientId = request.Query["patientId"].ToString();
-                if (patientId.Length == 36) // length of guid
+                switch (patientId.Length)
                 {
-                    Console.WriteLine("patientId: " + patientId);
-                    // check if patient is in dokter's list
-                    var notifications =
-                        await meldingService.GetMeldingenByPatientIdAndDoctorId(patientId, dokterId, offset, level, type);
-                    return Results.Ok(notifications);
+                    // length of guid
+                    case 36:
+                    {
+                        Console.WriteLine("patientId: " + patientId);
+                        // check if patient is in dokter's list
+                        var notifications =
+                            await meldingService.GetMeldingenByPatientIdAndDoctorId(patientId, dokterId, offset, level,
+                                type);
+                        return Results.Ok(notifications);
+                    }
+                    case 0:
+                    {
+                        var notifications = await meldingService.GetMeldingenByDoctorId(dokterId, offset, level, type);
+                        return Results.Ok(notifications);
+                    }
+                    default:
+                        return Results.BadRequest("Invalid patientId");
                 }
             }
             catch (PatientNotFoundException e)
