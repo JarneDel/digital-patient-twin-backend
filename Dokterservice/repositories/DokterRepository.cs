@@ -138,7 +138,7 @@ public class DokterRepository : IDokterRepository
     public async Task<Dokter> UnpinPatientFromDokter(string id, string patientId)
     {
         var dokter = await GetDokter(id);
-        var patient = dokter.PatientIds.FirstOrDefault(p => p == patientId);
+        var patient = dokter.PinnedPatients.FirstOrDefault(p => p == patientId);
         if (patient == null) throw new Exception("Patient not found");
         var didExist = dokter.PinnedPatients.Remove(patientId);
         if (!didExist) return dokter;
