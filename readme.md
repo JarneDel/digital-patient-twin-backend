@@ -1,3 +1,5 @@
+Frontend Git url: https://github.com/JarneDel/digital-patient-twin-frontend
+
 ## Rider run
 
 RIDER: per service:
